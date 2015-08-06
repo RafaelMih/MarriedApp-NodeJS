@@ -100,7 +100,7 @@ var UserSchema = new Schema({
  */
 UserSchema.pre('save', function(next) {
 	if (this.password && this.password.length > 6) {
-		this.salt = '';
+		this.salt = 'a';
 		this.password = this.hashPassword(this.password);
 	}
 
@@ -108,11 +108,55 @@ UserSchema.pre('save', function(next) {
 });
 
 /**
+ * Generic require login routing middleware
+ */
+exports.apiRequiresLogin = function(req, res,next) {
+    if (!req.isAuthenticated()) {
+        return res.jsonp(401,{ error:'User is not authorized'});
+    }
+    next();
+};
+
+// Profile authorization helpers
+exports.isOwnerProfile = function(req, res, next) {
+    if (req.user.role !== 'admin') {
+        if (req.profile.id !== req.user.id) {
+            return res.send(401, 'User is not authorized');
+        }
+    }
+    next();
+};
+
+// User admin authorization helpers
+exports.isAdmin = function(req, res, next) {
+    if (req.user.role !== 'admin') {
+        return res.send(401, 'User is not authorized');
+    }
+    next();
+};
+
+// User admin authorization helpers
+exports.isUser = function(req, res, next) {
+    if (req.user.role !== 'user') {
+        return res.send(401, 'User is not authorized');
+    }
+    next();
+};
+
+// User admin authorization helpers
+exports.isGuest = function(req, res, next) {
+    if (req.user.role !== 'user') {
+        return res.send(401, 'User is not authorized');
+    }
+    next();
+};
+
+/**
  * Create instance method for hashing a password
  */
 UserSchema.methods.hashPassword = function(password) {
 	if (this.salt && password) {
-		return crypto.createHash('sha1').update(password + this.salt).digest('hex');
+		return crypto.pbkdf2Sync(password, this.salt, 4096, 32).toString('hex');
 	} else {
 		return password;
 	}
