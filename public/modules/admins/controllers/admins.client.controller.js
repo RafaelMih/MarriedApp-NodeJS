@@ -7,7 +7,7 @@ angular.module('admins').controller('AdminsController', ['$scope', '$stateParams
 
 		// Create new Admin
 		$scope.create = function() {
-			
+
 			// Create new Admin object
 			var admin = new Admins ({
 				name: this.name
@@ -20,8 +20,7 @@ angular.module('admins').controller('AdminsController', ['$scope', '$stateParams
 				$scope.name = '';
 
 			}, function(errorResponse) {
-				console.log(errorResponse);
-				$scope.error = errorResponse.data.message;
+				$scope.errorResponseServer(errorResponse);
 			});
 		};
 
@@ -49,7 +48,7 @@ angular.module('admins').controller('AdminsController', ['$scope', '$stateParams
 			admin.$update(function() {
 				$location.path('admins/' + admin._id);
 			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
+				$scope.errorResponseServer(errorResponse);
 			});
 		};
 
@@ -63,6 +62,15 @@ angular.module('admins').controller('AdminsController', ['$scope', '$stateParams
 			$scope.admin = Admins.get({ 
 				adminId: $stateParams.adminId
 			});
+		};
+
+		$scope.errorResponseServer = function(errorResponse){
+			if (errorResponse.status === 403){
+				$location.path('/');
+			}
+			else{
+				$scope.error = errorResponse.data.message;	
+			}
 		};
 	}
 ]);
