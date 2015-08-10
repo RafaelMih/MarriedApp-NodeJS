@@ -92,7 +92,8 @@ var UserSchema = new Schema({
 	},
 	resetPasswordExpires: {
 		type: Date
-	}
+	},
+	projects : [ {type : mongoose.Schema.ObjectId, ref : 'Project'} ]
 });
 
 /**

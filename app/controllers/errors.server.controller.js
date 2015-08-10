@@ -17,10 +17,7 @@ var getUniqueErrorMessage = function(err) {
 	return output;
 };
 
-/**
- * Get the error message from error object
- */
-exports.getErrorMessage = function(err) {
+var getErrorMessages = function(err) {
 	
 	var messages = [];
 
@@ -41,3 +38,20 @@ exports.getErrorMessage = function(err) {
 
 	return messages;
 };
+
+/**
+ * Get the error message from error object
+ */
+exports.getErrorMessage = function(err) {
+	getErrorMessages(err);
+};
+
+/**
+ * Get the error message from error object
+ */
+exports.getError = function(res, err) {
+	return res.status(400).send({
+			message: getErrorMessages(err)
+		});
+};
+

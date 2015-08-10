@@ -1,0 +1,32 @@
+<section data-ng-controller="PhotosController" data-ng-init="getGalleries()">
+    <div class="page-header">
+        <h1>Nova Foto</h1>
+    </div>
+    <div class="col-md-12">
+        <form class="form-horizontal" data-ng-submit="create()" novalidate>
+            <fieldset>
+                <div class="form-group">
+                    <label class="control-label" for="name">Nome</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Nome" required>
+                    </div>
+                    <label class="control-label" for="name">Galeria</label>
+                    <div class="controls">
+                        <select  data-ng-model="gallery" id="gallery" class="form-control">
+                            <option value="" selected="selected">Selecione...</option>
+                            <option data-ng-repeat="gallery in galleries" value="{{ gallery._id }}">
+                                {{ gallery.name }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-default">
+                </div>
+				<div data-ng-show="error" class="text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+            </fieldset>
+        </form>
+    </div>
+</section>

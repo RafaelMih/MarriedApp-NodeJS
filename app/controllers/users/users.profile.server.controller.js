@@ -5,6 +5,7 @@
  */
 var _ = require('lodash'),
 	errorHandler = require('../errors.server.controller.js'),
+	mapper = require('../mappers/login.server.mapper.js'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
 	User = mongoose.model('User');
@@ -12,7 +13,8 @@ var _ = require('lodash'),
 
 var messages = {
 	error : {
-		UserNotSignedIn : 'Usuário não informado.'
+		UserNotSignedIn : 'Usuário não informado',
+		UserNotLoad : 'Usuário não encontrado'
 	}
 };
 
@@ -72,4 +74,22 @@ exports.all = function (req, res) {
  */
 exports.me = function(req, res) {
 	res.json(req.user || null);
+};
+
+/**
+ * Get User by Login
+ */
+exports.getUserByLogin = function(res, login, next){
+	User.findOne({
+		$or: [
+        	{ 'email' : login.login },
+        	{ 'username' : login.login }
+        ],
+		password: login.password
+	}).exec(function(err, user) {		
+		if (err) return next(errorHandler.getError(res, err));
+		if (!user) return res.status(400).send({message: messages.error.UserNotLoad});
+		user = mapper.User(user);
+		return res.json(user);
+	});
 };

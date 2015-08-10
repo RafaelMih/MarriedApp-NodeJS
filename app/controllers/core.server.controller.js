@@ -9,3 +9,7 @@ exports.index = function(req, res) {
 		request: req
 	});
 };
+
+exports.getIP = function(req){
+	return req.connection.remoteAddress;
+};

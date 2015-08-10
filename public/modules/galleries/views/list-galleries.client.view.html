@@ -1,0 +1,19 @@
+<section data-ng-controller="GalleriesController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Galerias</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="gallery in galleries" data-ng-href="#!/galleries/{{gallery._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Cadastrado em
+				<span data-ng-bind="gallery.created | date:'dd/MM/yyyy hh:mm'"></span>
+				por
+				<span data-ng-bind="gallery.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="gallery.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!galleries.$resolved || galleries.length">
+    	Nenhuma galeria cadastrada <a href="/#!/galleries/create">Cadastrar galeria.</a>?
+    </div>
+</section>
