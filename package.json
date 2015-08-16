@@ -42,6 +42,7 @@
     "passport-local": "~1.0.0",
     "passport-twitter": "~1.0.2",
     "pbkdf2-sha256": "^1.1.0",
+    "sha256": "^0.2.0",
     "swig": "~1.4.1"
   },
   "devDependencies": {

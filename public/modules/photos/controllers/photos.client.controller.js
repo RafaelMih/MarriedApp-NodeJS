@@ -73,7 +73,6 @@ angular.module('photos').controller('PhotosController', ['$scope', '$stateParams
 		$scope.initEdit = function(){
 			$scope.getGalleries();
 			$scope.findOne();
-			
 		};
 	}
 ]);

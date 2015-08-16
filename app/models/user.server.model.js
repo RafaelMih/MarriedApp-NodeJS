@@ -5,7 +5,8 @@
  */
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
-	crypto = require('crypto');
+	sha256 = require('sha256'),
+	config = require('../../config/env/all');
 
 /**
  * A Validation function for local strategy properties
@@ -63,9 +64,6 @@ var UserSchema = new Schema({
 		default: '',
 		validate: [validateLocalStrategyPassword, 'Password should be longer']
 	},
-	salt: {
-		type: String
-	},
 	provider: {
 		type: String,
 		required: 'Provider is required'
@@ -93,15 +91,15 @@ var UserSchema = new Schema({
 	resetPasswordExpires: {
 		type: Date
 	},
-	projects : [ {type : mongoose.Schema.ObjectId, ref : 'Project'} ]
+	projects : [ {type : Schema.ObjectId, ref : 'Project'} ]
 });
 
 /**
  * Hook a pre save method to hash the password
  */
 UserSchema.pre('save', function(next) {
-	if (this.password && this.password.length > 6) {
-		this.salt = 'a';
+	if (this.password) {
+		this.salt = config.salt;
 		this.password = this.hashPassword(this.password);
 	}
 
@@ -144,20 +142,12 @@ exports.isUser = function(req, res, next) {
     next();
 };
 
-// User admin authorization helpers
-exports.isGuest = function(req, res, next) {
-    if (req.user.role !== 'user') {
-        return res.send(401, 'User is not authorized');
-    }
-    next();
-};
-
 /**
  * Create instance method for hashing a password
  */
 UserSchema.methods.hashPassword = function(password) {
 	if (this.salt && password) {
-		return crypto.pbkdf2Sync(password, this.salt, 4096, 32).toString('hex');
+		return sha256(password + this.salt);
 	} else {
 		return password;
 	}

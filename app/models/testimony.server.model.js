@@ -10,19 +10,22 @@ var mongoose = require('mongoose'),
  * Testimony Schema
  */
 var TestimonySchema = new Schema({
-	name: {
+	message: {
 		type: String,
 		default: '',
-		required: 'Please fill Testimony name',
-		trim: true
+		required: 'Informe a mensagem depoimento',
 	},
 	created: {
 		type: Date,
 		default: Date.now
 	},
-	user: {
+	guest: {
 		type: Schema.ObjectId,
-		ref: 'User'
+		ref: 'Guest'
+	},
+	project: {
+		type: Schema.ObjectId,
+		ref: 'Project'
 	}
 });
 

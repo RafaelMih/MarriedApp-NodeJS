@@ -2,13 +2,14 @@
 
 module.exports = {
 	app: {
-		title: 'MeanApp',
-		description: 'Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js',
-		keywords: 'MongoDB, Express, AngularJS, Node.js'
+		title: 'Married App',
+		description: 'Todo seu casamento na palma da mão',
+		keywords: 'married app, casamento, aplicativo'
 	},
+	salt: '70c4cbcd-acec-43f2-ad0c-f5d6d001273d',
 	port: process.env.PORT || 3000,
 	templateEngine: 'swig',
-	sessionSecret: 'MEAN',
+	sessionSecret: 'secSessMarriedApp',
 	sessionCollection: 'sessions',
 	assets: {
 		lib: {

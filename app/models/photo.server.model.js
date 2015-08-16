@@ -16,6 +16,24 @@ var PhotoSchema = new Schema({
 		required: 'Please fill Photo name',
 		trim: true
 	},
+	urlPhoto: {
+		type: String,
+		default: '',
+		required: '',
+		trim: true
+	},
+	order: {
+		type: Number,
+		default: ''
+	},
+	active: {
+		type: Boolean,
+		default: true,
+	},
+	photosEnable: {
+		type: Boolean,
+		default: false
+	},
 	created: {
 		type: Date,
 		default: Date.now
