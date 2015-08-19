@@ -2,7 +2,7 @@
 	<div class="page-header">
 		<h1 data-ng-bind="gallery.name"></h1>
 	</div>
-	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == gallery.user._id))">
+	<div class="pull-right">
 		<a class="btn btn-primary" href="/#!/galleries/{{gallery._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
@@ -10,12 +10,12 @@
 			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>
-	<small>
-		<em class="text-muted">
-			Cadastrado em
-			<span data-ng-bind="gallery.created | date:'mediumDate'"></span>
-			por
-			<span data-ng-bind="gallery.user.displayName"></span>
-		</em>
+	<small class="list-group-item-text">
+		Cadastrado em
+		<span>{{ gallery.created | date:"dd/MM/yyyy 'às' hh:mm:ss" }}</span>
+		<p>
+            Criado por: 
+		    <span data-ng-bind="gallery._creator.name"></span>
+        </p>
 	</small>
 </section>

@@ -5,104 +5,103 @@
  */
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
-	Gallery = mongoose.model('Gallery'),
+	Userapp = mongoose.model('Userapp'),
 	_ = require('lodash');
 
 /**
- * Create a Gallery
+ * Create a Userapp
  */
 exports.create = function(req, res) {
-	var gallery = new Gallery(req.body);
-	gallery._creator = req.user;
+	var userapp = new Userapp(req.body);
+	userapp.user = req.user;
 
-	gallery.save(function(err) {
+	userapp.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(gallery);
+			res.jsonp(userapp);
 		}
 	});
 };
 
 /**
- * Show the current Gallery
+ * Show the current Userapp
  */
 exports.read = function(req, res) {
-	res.jsonp(req.gallery);
+	res.jsonp(req.userapp);
 };
 
 /**
- * Update a Gallery
+ * Update a Userapp
  */
 exports.update = function(req, res) {
-	var gallery = req.gallery ;
+	var userapp = req.userapp ;
 
-	gallery = _.extend(gallery , req.body);
+	userapp = _.extend(userapp , req.body);
 
-	gallery.save(function(err) {
+	userapp.save(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(gallery);
+			res.jsonp(userapp);
 		}
 	});
 };
 
 /**
- * Delete an Gallery
+ * Delete an Userapp
  */
 exports.delete = function(req, res) {
-	var gallery = req.gallery ;
+	var userapp = req.userapp ;
 
-	gallery.remove(function(err) {
+	userapp.remove(function(err) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(gallery);
+			res.jsonp(userapp);
 		}
 	});
 };
 
 /**
- * List of Galleries
+ * List of Userapps
  */
 exports.list = function(req, res) { 
-	Gallery.find().sort('name')
-	.populate('_creator', 'name')
-	.exec(function(err, galleries) {
+	Userapp.find().sort('-created').populate('user', 'displayName').exec(function(err, userapps) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
-			res.jsonp(galleries);
+			res.jsonp(userapps);
 		}
 	});
 };
 
 /**
- * Gallery middleware
+ * Userapp middleware
  */
-exports.galleryByID = function(req, res, next, id) { 
-	Gallery.findById(id)
-	.populate('_creator', 'name')
-	.exec(function(err, gallery) {
+exports.userappByID = function(req, res, next, id) { 
+	Userapp.findById(id).populate('user', 'displayName').exec(function(err, userapp) {
 		if (err) return next(err);
-		if (! gallery) return next(new Error('Failed to load Gallery ' + id));
-		req.gallery = gallery ;
+		if (! userapp) return next(new Error('Failed to load Userapp ' + id));
+		req.userapp = userapp ;
 		next();
 	});
 };
 
 /**
- * Gallery authorization middleware
+ * Userapp authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
+	if (req.userapp.user.id !== req.user.id) {
+		return res.status(403).send('User is not authorized');
+	}
 	next();
 };

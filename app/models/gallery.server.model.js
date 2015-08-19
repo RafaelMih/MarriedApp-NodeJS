@@ -13,12 +13,12 @@ var GallerySchema = new Schema({
 	name: {
 		type: String,
 		default: '',
-		required: 'Please fill Gallery name',
+		required: 'Informe o nome da galeria',
 		trim: true
 	},
-	user: {
+	_creator: {
 		type: Schema.ObjectId,
-		ref: 'User'
+		ref: 'Admin'
 	},
 	active: {
 		type: Boolean,

@@ -12,22 +12,6 @@ angular.module('photos').factory('Photos', ['$resource',
 	}
 ]);
 
-//Get Gallery domain
-angular.module('photos').factory('Galleries', ['$resource',
-	function($resource) {
-		return $resource('galleries/', { 
-		}, {
-			'query': {
-			    method: 'GET',
-			    isArray: false
-			},
-			'get': {
-			    method: 'GET',
-			    isArray: true
-			}
-		});
-	}
-]);
 
 //Get Project domain
 angular.module('photos').factory('Projects', ['$resource',
@@ -36,7 +20,7 @@ angular.module('photos').factory('Projects', ['$resource',
 		}, {
 			'query': {
 			    method: 'GET',
-			    isArray: false
+			    isArray: true
 			},
 			'get': {
 			    method: 'GET',

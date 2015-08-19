@@ -1,0 +1,19 @@
+<section data-ng-controller="UserappsController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Userapps</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="userapp in userapps" data-ng-href="#!/userapps/{{userapp._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="userapp.created | date:'medium'"></span>
+				by
+				<span data-ng-bind="userapp.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="userapp.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!userapps.$resolved || userapps.length">
+    	No Userapps yet, why don't you <a href="/#!/userapps/create">create one</a>?
+    </div>
+</section>
