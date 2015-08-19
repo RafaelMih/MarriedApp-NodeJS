@@ -44,9 +44,7 @@ exports.update = function(req, res) {
 
 	photo.save(function(err) {
 		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
+			errorHandler.getError(res, err);
 		} else {
 			res.jsonp(photo);
 		}
@@ -61,9 +59,7 @@ exports.delete = function(req, res) {
 
 	photo.remove(function(err) {
 		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
+			errorHandler.getError(res, err);
 		} else {
 			res.jsonp(photo);
 		}
@@ -80,9 +76,7 @@ exports.list = function(req, res) {
 	.populate('gallery','name')
 	.exec(function(err, photos) {
 		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
+			errorHandler.getError(res, err);
 		} else {
 			res.jsonp(photos);
 		}

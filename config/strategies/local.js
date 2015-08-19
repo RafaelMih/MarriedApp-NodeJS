@@ -5,7 +5,10 @@
  */
 var passport = require('passport'),
 	LocalStrategy = require('passport-local').Strategy,
-	User = require('mongoose').model('User');
+	mongoose = require('mongoose'),
+	Admin = mongoose.model('Admin'),
+	sha256 = require('sha256'),
+	config = require('../env/all');
 
 module.exports = function() {
 	// Use local strategy
@@ -14,24 +17,28 @@ module.exports = function() {
 			passwordField: 'password'
 		},
 		function(username, password, done) {
-			User.findOne({
-				username: username
-			}, function(err, user) {
+			Admin.findOne({
+			$or: [
+	        	{ 'email' : username },
+        		{ 'username': username }
+        	],
+			password: sha256(password + config.salt)
+			}, function(err, admin) {
 				if (err) {
 					return done(err);
 				}
-				if (!user) {
+				if (!admin) {
 					return done(null, false, {
-						message: 'Unknown user or invalid password'
+						message: 'Usuário/senha inválida.'
 					});
 				}
-				if (!user.authenticate(password)) {
+				if (!admin.authenticate(password)) {
 					return done(null, false, {
-						message: 'Unknown user or invalid password'
+						message: 'Usuário/senha inválida.'
 					});
 				}
 
-				return done(null, user);
+				return done(null, admin);
 			});
 		}
 	));

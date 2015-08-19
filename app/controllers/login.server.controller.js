@@ -13,8 +13,16 @@ var mongoose = require('mongoose'),
  * Login
  */
 exports.login = function(req, res, next) {
+	console.log(req.params);
+	
 	var login = new Login(req.body);
-	login.ip = coreHandler.getIP(req);
+
+	/*var login = new Login({
+	phone : req.params.phone,
+	projectId : req.params.projectId,
+	hash : req.params.hash,
+	ip : coreHandler.getIP(req)
+	});*/
 
 	login.save(function(err) {
 		if (err) {

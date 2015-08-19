@@ -7,8 +7,6 @@ var init = require('./config/init')(),
 	mongoose = require('mongoose'),
 	chalk = require('chalk');
 
-process.env.NODE_ENV = 'development';
-
 // Bootstrap db connection
 var db = mongoose.connect(config.db, function(err) {
 	if (err) {
@@ -30,4 +28,4 @@ app.listen(config.port);
 exports = module.exports = app;
 
 // Logging initialization
-console.log('MEAN.JS application started on port ' + config.port);
+console.log('MarriedApp started on port ' + config.port);

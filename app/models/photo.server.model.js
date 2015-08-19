@@ -10,20 +10,22 @@ var mongoose = require('mongoose'),
  * Photo Schema
  */
 var PhotoSchema = new Schema({
-	name: {
-		type: String,
+	description: {
+		type: String, 
+		max: 100,
 		default: '',
-		required: 'Please fill Photo name',
 		trim: true
 	},
 	urlPhoto: {
 		type: String,
+		max: 200,
 		default: '',
-		required: '',
+		required: 'Informe o endereço da foto',
 		trim: true
 	},
 	order: {
 		type: Number,
+		max: 3,
 		default: ''
 	},
 	active: {

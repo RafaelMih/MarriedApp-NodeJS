@@ -1,10 +1,7 @@
 'use strict';
 
 module.exports = {
-	db: 'mongodb://localhost/meanapp-dev',
-	app: {
-		title: 'Married App - Development Environment'
-	},
+	db: 'mongodb://localhost/marriedapp',
 	facebook: {
 		clientID: process.env.FACEBOOK_ID || '601913059832041',
 		clientSecret: process.env.FACEBOOK_SECRET || '943e70183d008198058d848055500d86',

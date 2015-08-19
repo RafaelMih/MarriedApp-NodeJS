@@ -80,6 +80,7 @@ exports.me = function(req, res) {
  * Get User by Login
  */
 exports.getUserByLogin = function(res, login, next){
+	console.log('login === ' + login);
 	User.findOne({
 		$or: [
         	{ 'email' : login.login },

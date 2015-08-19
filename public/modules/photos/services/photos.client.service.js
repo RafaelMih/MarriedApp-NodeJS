@@ -28,3 +28,20 @@ angular.module('photos').factory('Galleries', ['$resource',
 		});
 	}
 ]);
+
+//Get Project domain
+angular.module('photos').factory('Projects', ['$resource',
+	function($resource) {
+		return $resource('projects/', { 
+		}, {
+			'query': {
+			    method: 'GET',
+			    isArray: false
+			},
+			'get': {
+			    method: 'GET',
+			    isArray: true
+			}
+		});
+	}
+]);

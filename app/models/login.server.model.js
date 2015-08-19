@@ -8,56 +8,59 @@ var mongoose = require('mongoose'),
 	crypto = require('crypto'),
 	Schema = mongoose.Schema;
 
-var validateLength = {
-	login : {
+/*var validateLength = {
+	phone : {
 		min : 5,
 		max : 100
 	},
-	password : {
+	projectId : {
 		min : 64,
 		max : 64
 	}
-};
+};*/
 
 var messages = {
-	login: 'Informe o login',
-	password: 'Informe a senha',
+	phone: 'Informe o telefone',
+	projectId: 'Informe o projeto',
+	hash: 'Informe o código de autenticação',
 	ip: 'IP não informado',
-	validate : {
+	/*validate : {
 		login: 'O login deve ter de '+ validateLength.login.min + ' à '+ validateLength.login.max + ' caracteres',
 		password: 'A senha deve ter '+ validateLength.password.min + ' caracteres'
-	}
+	}*/
 };
 
-var validateLocalStrategyLogin = function(property) {
+/*var validateLocalStrategyLogin = function(property) {
 	return validator.isLength(this.login, validateLength.login.min, validateLength.login.max);
 };
 
-/**
- * A Validation function for local strategy password
- */
+
 var validateLocalStrategyPassword = function(property) {
 	return validator.isLength(this.password, validateLength.password.min, validateLength.password.max);
-};
+};*/
 
 
 /**
  * Login Schema
  */
 var LoginSchema = new Schema({
-	login: {
+	phone: {
 		type: String,
 		default: '',
-		required: messages.login,
-		trim: true,
-		validate: [validateLocalStrategyLogin, messages.validate.email]
+		required: messages.phone,
+		trim: true
 	},
-	password: {
+	projectId: {
 		type: String,
 		default: '',
-		required: messages.password,
-		trim: true,
-		validate: [validateLocalStrategyPassword, messages.validate.password]
+		required: messages.projectId,
+		trim: true
+	},
+	hash: {
+		type: String,
+		default: '',
+		required: messages.hash,
+		trim: true
 	},
 	ip :{
 		type: String,

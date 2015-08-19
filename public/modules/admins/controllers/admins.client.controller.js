@@ -10,15 +10,16 @@ angular.module('admins').controller('AdminsController', ['$scope', '$stateParams
 
 			// Create new Admin object
 			var admin = new Admins ({
-				name: this.name
+				name: this.name,
+				username: this.username,
+				email: this.email,
+				password: this.password,
+				role: this.role
 			});
 
 			// Redirect after save
 			admin.$save(function(response) {
 				$location.path('admins/' + response._id);
-
-				$scope.name = '';
-
 			}, function(errorResponse) {
 				$scope.errorResponseServer(errorResponse);
 			});

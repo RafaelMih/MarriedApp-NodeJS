@@ -13,13 +13,10 @@ var mongoose = require('mongoose'),
  */
 exports.create = function(req, res) {
 	var project = new Project(req.body);
-	project.user = req.user;
 
 	project.save(function(err) {
 		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
+			errorHandler.getError(res, err);
 		} else {
 			res.jsonp(project);
 		}
@@ -43,9 +40,7 @@ exports.update = function(req, res) {
 
 	project.save(function(err) {
 		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
+			errorHandler.getError(res, err);
 		} else {
 			res.jsonp(project);
 		}
@@ -73,11 +68,11 @@ exports.delete = function(req, res) {
  * List of Projects
  */
 exports.list = function(req, res) { 
-	Project.find().sort('-created').populate('user', 'displayName').exec(function(err, projects) {
+	Project.find().sort('-created')
+	.populate('users', 'displayName')
+	.exec(function(err, projects) {
 		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
+			errorHandler.getError(res, err);
 		} else {
 			res.jsonp(projects);
 		}
@@ -101,7 +96,7 @@ exports.projectByID = function(req, res, next, id) {
  */
 exports.hasAuthorization = function(req, res, next) {
 	if (req.project.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
+		return res.status(403).send('Usuário não autorizado');
 	}
 	next();
 };

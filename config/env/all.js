@@ -7,7 +7,7 @@ module.exports = {
 		keywords: 'married app, casamento, aplicativo'
 	},
 	salt: '70c4cbcd-acec-43f2-ad0c-f5d6d001273d',
-	port: process.env.PORT || 3000,
+	port: process.env.PORT || 9000,
 	templateEngine: 'swig',
 	sessionSecret: 'secSessMarriedApp',
 	sessionCollection: 'sessions',

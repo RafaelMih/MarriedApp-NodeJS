@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 var passport = require('passport'),
-	User = require('mongoose').model('User'),
+	Admin = require('mongoose').model('Admin'),
 	path = require('path'),
 	config = require('./config');
 	
@@ -13,16 +13,16 @@ var passport = require('passport'),
  */
 module.exports = function() {
 	// Serialize sessions
-	passport.serializeUser(function(user, done) {
-		done(null, user.id);
+	passport.serializeUser(function(admin, done) {
+		done(null, admin.id);
 	});
 
 	// Deserialize sessions
 	passport.deserializeUser(function(id, done) {
-		User.findOne({
+		Admin.findOne({
 			_id: id
-		}, '-salt -password', function(err, user) {
-			done(err, user);
+		}, '-salt -password', function(err, admin) {
+			done(err, admin);
 		});
 	});
 

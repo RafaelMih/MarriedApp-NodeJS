@@ -30,17 +30,24 @@ var messages = {
  * User Schema
  */
 var UserSchema = new Schema({
+	phone: {
+		type: String,
+		trim: true,
+		default: '',
+		unique: 'Número de telefone já cadastrado',
+		required: 'Infome o número de telefone'
+	},
 	firstName: {
 		type: String,
 		trim: true,
 		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your first name']
+		required: 'Informe o primeiro nome'
 	},
 	lastName: {
 		type: String,
 		trim: true,
 		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your last name']
+		required: 'Informe o último nome'
 	},
 	displayName: {
 		type: String,

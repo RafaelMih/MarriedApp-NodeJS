@@ -1,4 +1,4 @@
-<section data-ng-controller="PhotosController" data-ng-init="getGalleries()">
+<section data-ng-controller="PhotosController" data-ng-init="initCreate()">
     <div class="page-header">
         <h1>Nova Foto</h1>
     </div>
@@ -6,11 +6,28 @@
         <form class="form-horizontal" data-ng-submit="create()" novalidate>
             <fieldset>
                 <div class="form-group">
-                    <label class="control-label" for="name">Nome</label>
+                    <label class="control-label" for="order">Ordem</label>
                     <div class="controls">
-                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Nome" required>
+                        <input type="text" data-ng-model="order" id="order" class="form-control" placeholder="Ordem">
                     </div>
-                    <label class="control-label" for="name">Galeria</label>
+                    <label class="control-label" for="description">Descrição</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="description" id="description" class="form-control" placeholder="Descrição" required>
+                    </div>
+                    <label class="control-label" for="urlPhoto">URL</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="urlPhoto" id="urlPhoto" class="form-control" placeholder="Endereço da foto" required>
+                    </div>
+                    <label class="control-label" for="project">Projeto</label>
+                    <div class="controls">
+                        <select  data-ng-model="project" id="project" class="form-control">
+                            <option value="" selected="selected">Selecione...</option>
+                            <option data-ng-repeat="project in projects" value="{{ project._id }}">
+                                {{ project.created }}
+                            </option>
+                        </select>
+                    </div>
+                    <label class="control-label" for="gallery">Galeria</label>
                     <div class="controls">
                         <select  data-ng-model="gallery" id="gallery" class="form-control">
                             <option value="" selected="selected">Selecione...</option>

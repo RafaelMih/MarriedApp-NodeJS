@@ -2,7 +2,7 @@
 	<div class="page-header">
 		<h1 data-ng-bind="admin.name"></h1>
 	</div>
-	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == admin.user._id))">
+	<div class="pull-right" data-ng-show="true">
 		<a class="btn btn-primary" href="/#!/admins/{{admin._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
@@ -12,10 +12,10 @@
 	</div>
 	<small>
 		<em class="text-muted">
-			Posted on
+			Cadastrado em 
 			<span data-ng-bind="admin.created | date:'mediumDate'"></span>
 			by
-			<span data-ng-bind="admin.user.displayName"></span>
+			<span data-ng-bind="admin.admin.name"></span>
 		</em>
 	</small>
 </section>

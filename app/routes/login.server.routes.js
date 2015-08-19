@@ -4,8 +4,10 @@ module.exports = function(app) {
 	var users = require('../../app/controllers/users.server.controller');
 	var login = require('../../app/controllers/login.server.controller');
 
-	// Admins Routes
+	// Login Routes
 	app.route('/login')
-		.get(login.list)
-		.post(login.login);
+		.get(login.login);
+
+	//app.route('/signup')
+		//.get(login.signup);
 };

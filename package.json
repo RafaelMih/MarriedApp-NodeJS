@@ -2,7 +2,7 @@
   "name": "MarriedApp",
   "version": "0.0.1",
   "description": "Aplicativo de casamento",
-  "author": "Rafael Santos",
+  "author": "Kiwimob",
   "engines": {
     "node": "0.10.x",
     "npm": "1.4.x"
@@ -28,6 +28,7 @@
     "glob": "~4.0.5",
     "grunt-cli": "~0.1.13",
     "helmet": "~0.5.0",
+    "livereload-js": "^2.2.0",
     "lodash": "~2.4.1",
     "mean-admin": "0.0.2",
     "method-override": "~2.3.0",
@@ -43,7 +44,8 @@
     "passport-twitter": "~1.0.2",
     "pbkdf2-sha256": "^1.1.0",
     "sha256": "^0.2.0",
-    "swig": "~1.4.1"
+    "swig": "~1.4.1",
+    "validator": "*"
   },
   "devDependencies": {
     "supertest": "~0.14.0",
