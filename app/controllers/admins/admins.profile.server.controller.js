@@ -23,7 +23,7 @@ var messages = {
  */
 exports.create = function(req, res) {
 	var admin = new Admin(req.body);
-	admin.admin = req.admin;
+	admin._creator = req.user.id;
 
 	admin.save(function(err) {
 		if (err) {
@@ -78,28 +78,14 @@ exports.list = function(req, res) {
  * Admin middleware
  */
 exports.adminByID = function(req, res, next, id) { 
-	Admin.findById(id).populate('user', 'displayName').exec(function(err, admin) {
+	Admin.findById(id)
+	.populate('_creator', 'name')
+	.exec(function(err, admin) {
 		if (err) return next(err);
 		if (! admin) return next(new Error('Failed to load Admin ' + id));
 		req.admin = admin ;
 		next();
 	});
-};
-
-/**
- * Admin authorization middleware
- */
-exports.hasAuthorization = function(role) {
-	return function(req, res, next) {
-		if (role !== req.user.roles) {
-			return res.status(403).send({
-				message: 'User is not authorized'
-			});
-		}
-		else{
-			next();
-		}
-	};
 };
 
 /**

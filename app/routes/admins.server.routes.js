@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 	// Admins Routes
 	app.route('/admins')
-		.get(admins.requiresLogin, admins.hasAuthorization(['admin']), admins.list)
+		.get(admins.hasAuthorization(['admin']), admins.list)
 		.post(admins.requiresLogin, admins.hasAuthorization(['admin']), admins.create);
 
 	app.route('/admins/:adminId')

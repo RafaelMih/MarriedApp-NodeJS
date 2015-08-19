@@ -20,7 +20,6 @@ exports.signin = function(req, res, next) {
 		} else {
 			// Remove sensitive data before login
 			admin.password = undefined;
-			admin.salt = undefined;
 
 			req.login(admin, function(err) {
 

@@ -32,6 +32,7 @@ exports.adminByID = function(req, res, next, id) {
  * Require login routing middleware
  */
 exports.requiresLogin = function(req, res, next) {
+
 	if (!req.isAuthenticated()) {
 		return res.status(401).send({
 			message: messages.AdminNotLogged
@@ -44,12 +45,12 @@ exports.requiresLogin = function(req, res, next) {
 /**
  * Admin authorizations routing middleware
  */
-exports.hasAuthorization = function(roles) {
+exports.hasAuthorization = function(role) {
 	var _this = this;
 
 	return function(req, res, next) {
 		_this.requiresLogin(req, res, function() {
-			if (_.intersection(req.admin.roles, roles).length) {
+			if (_.intersection(req.user.roles, role).length) {
 				return next();
 			} else {
 				return res.status(403).send({
