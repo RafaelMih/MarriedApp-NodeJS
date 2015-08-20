@@ -13,8 +13,7 @@ var mongoose = require('mongoose'),
  */
 exports.create = function(req, res) {
 	var photo = new Photo(req.body);
-	photo.user = req.user;
-	console.log(photo);
+	photo._creator = req.user;
 
 	photo.save(function(err) {
 		if (err) {
@@ -39,8 +38,11 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
 	var photo = req.photo ;
+	photo.updated = Date.now();
 
 	photo = _.extend(photo , req.body);
+
+	console.log(photo);
 
 	photo.save(function(err) {
 		if (err) {
@@ -72,8 +74,9 @@ exports.delete = function(req, res) {
 exports.list = function(req, res) { 
 	Photo.find()
 	.sort('-created')
-	.populate('user', 'displayName')
-	.populate('gallery','name')
+	.populate('_creator', 'name')
+	.populate('_gallery')
+	.populate('_project')
 	.exec(function(err, photos) {
 		if (err) {
 			errorHandler.getError(res, err);
@@ -88,8 +91,9 @@ exports.list = function(req, res) {
  */
 exports.photoByID = function(req, res, next, id) { 
 	Photo.findById(id)
-	.populate('user', 'displayName')
-	.populate('gallery','name')
+	.populate('_creator', 'name')
+	.populate('_gallery')
+	.populate('_project')
 	.exec(function(err, photo) {
 		if (err) return next(err);
 		if (! photo) return next(new Error('Failed to load Photo ' + id));
@@ -102,8 +106,5 @@ exports.photoByID = function(req, res, next, id) {
  * Photo authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.photo.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
-	}
 	next();
 };

@@ -38,6 +38,7 @@ exports.read = function(req, res) {
  */
 exports.update = function(req, res) {
 	var gallery = req.gallery ;
+	gallery.updated = Date.now();
 
 	gallery = _.extend(gallery , req.body);
 

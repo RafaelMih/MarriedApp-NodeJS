@@ -23,7 +23,7 @@
                         <select  data-ng-model="project" id="project" class="form-control">
                             <option value="" selected="selected">Selecione...</option>
                             <option data-ng-repeat="project in projects" value="{{ project._id }}">
-                                {{ project.created }}
+                                {{ project.name }}
                             </option>
                         </select>
                     </div>

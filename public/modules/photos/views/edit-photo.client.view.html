@@ -1,20 +1,31 @@
 <section data-ng-controller="PhotosController" data-ng-init="initEdit()">
     <div class="page-header">
-        <h1>Edit Photo</h1>
+        <h1>Editar Foto</h1>
     </div>
     <div class="col-md-12">
         <form class="form-horizontal" data-ng-submit="update()" novalidate>
             <fieldset>
                 <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
+                    <label class="control-label" for="order">Ordem</label>
                     <div class="controls">
-                        <input type="text" data-ng-model="photo.name" id="name" class="form-control" placeholder="Name" required>
+                        <input type="text" data-ng-model="photo.order" id="order" class="form-control" placeholder="Ordem">
                     </div>
+                    <label class="control-label" for="description">Descrição</label>
                     <div class="controls">
-                    <label class="control-label" for="name">Álbum</label>
-                        <select class="form-control"  
-                        ng-model="photo.gallery._id"
-                        ng-options="gallery._id as gallery.name for gallery in galleries">
+                        <input type="text" data-ng-model="photo.description" id="description" class="form-control" placeholder="Descrição" required>
+                    </div>
+                    <label class="control-label" for="urlPhoto">URL</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="photo.urlPhoto" id="urlPhoto" class="form-control" placeholder="Endereço da foto" required>
+                    </div>
+                    <label class="control-label" for="project">Projeto</label>
+                    <div class="controls">
+                        <select class="form-control" ng-model="photo._project._id" ng-options="project._id as project.name for project in projects">
+                        </select>
+                    </div>
+                    <label class="control-label" for="gallery">Galeria</label>
+                    <div class="controls">
+                        <select class="form-control" ng-model="photo._gallery._id" ng-options="gallery._id as gallery.name for gallery in galleries">
                         </select>
                     </div>
                 </div>

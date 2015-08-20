@@ -4,17 +4,18 @@
     </div>
     <div class="list-group">
         <a data-ng-repeat="photo in photos" data-ng-href="#!/photos/{{photo._id}}" class="list-group-item">
-			<small class="list-group-item-text">
-				Cadastrado em
-				<span data-ng-bind="photo.created | date:'medium'"></span>
-				por
-				<span data-ng-bind="photo.user.displayName"></span>
-			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="photo.name"></h4>
-            <h5 class="list-group-item-heading" data-ng-bind="photo.gallery.name"></h5>
+			<h4 class="list-group-item-heading" data-ng-bind="photo.description"></h4>
+            <small class="list-group-item-text">
+                Cadastrado em
+                <span>{{ photo.created | date:"dd/MM/yyyy 'às' hh:mm:ss" }}</span>
+                <p>
+                    Criado por: 
+                    <span data-ng-bind="photo._creator.name"></span>
+                </p>
+            </small>
         </a>
     </div>
     <div class="alert alert-warning text-center" data-ng-hide="!photos.$resolved || photos.length">
-    	No Photos yet, why don't you <a href="/#!/photos/create">create one</a>?
+    	Não há fotos cadastradas <a href="/#!/photos/create">Cadastrar uma</a>?
     </div>
 </section>

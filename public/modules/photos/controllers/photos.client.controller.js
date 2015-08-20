@@ -1,8 +1,8 @@
 'use strict';
 
 // Photos controller
-angular.module('photos').controller('PhotosController', ['$scope', '$stateParams', '$location', 'Authentication', 'Photos', 'Galleries', 'Projects',
-	function($scope, $stateParams, $location, Authentication, Photos, Galleries, Projects) {
+angular.module('photos').controller('PhotosController', ['$scope', '$stateParams', '$location', 'Authentication', 'Photos',
+	function($scope, $stateParams, $location, Authentication, Photos) {
 
 		$scope.authentication = Authentication;
 
@@ -10,9 +10,11 @@ angular.module('photos').controller('PhotosController', ['$scope', '$stateParams
 		$scope.create = function() {
 			// Create new Photo object
 			var photo = new Photos ({
-				name: this.name,
-				gallery : this.gallery,
-				project : this.project
+				description: this.description,
+				urlPhoto: this.urlPhoto,
+				order: this.order,
+				_gallery : this.gallery,
+				_project : this.project
 			});
 
 			// Redirect after save
@@ -68,13 +70,12 @@ angular.module('photos').controller('PhotosController', ['$scope', '$stateParams
 
 		// Find existing Photo
 		$scope.initCreate = function() {
-			$scope.galleries = Galleries.get();
-			$scope.projects = Projects.get();
-			console.log('==='+$scope.projects);
+   			$scope.galleries = Photos.getGalleries().query();
+			$scope.projects = Photos.getProjects().query();
 		};
 
 		$scope.initEdit = function(){
-			$scope.getGalleries();
+			$scope.initCreate();
 			$scope.findOne();
 		};
 	}

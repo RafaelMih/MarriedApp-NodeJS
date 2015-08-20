@@ -2,7 +2,7 @@
 	<div class="page-header">
 		<h1 data-ng-bind="userapp.name"></h1>
 	</div>
-	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == userapp.user._id))">
+	<div class="pull-right">
 		<a class="btn btn-primary" href="/#!/userapps/{{userapp._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
@@ -10,12 +10,12 @@
 			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>
-	<small>
-		<em class="text-muted">
-			Posted on
-			<span data-ng-bind="userapp.created | date:'mediumDate'"></span>
-			by
-			<span data-ng-bind="userapp.user.displayName"></span>
-		</em>
-	</small>
+	<small class="list-group-item-text">
+        Cadastrado em
+            <span>{{ userapp.created | date:"dd/MM/yyyy 'às' hh:mm:ss"}}</span>
+        <p>
+            Criado por: 
+            <span>{{ userapp._creator.name }}</span>
+        </p>
+    </small>
 </section>

@@ -1,9 +1,10 @@
 <section data-ng-controller="PhotosController" data-ng-init="findOne()">
 	<div class="page-header">
-		<h1 data-ng-bind="photo.name"></h1>
-		<h5 data-ng-bind="photo.gallery.name"></h5>
+		<h1 data-ng-bind="photo.description"></h1>
+		<h5 data-ng-bind="photo._gallery.name"></h5>
+		<img src="{{photo.urlPhoto}}" height="100" width="150" />
 	</div>
-	<div class="pull-right" data-ng-show="((authentication.user) && (authentication.user._id == photo.user._id))">
+	<div class="pull-right">
 		<a class="btn btn-primary" href="/#!/photos/{{photo._id}}/edit">
 			<i class="glyphicon glyphicon-edit"></i>
 		</a>
@@ -11,12 +12,12 @@
 			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>
-	<small>
-		<em class="text-muted">
-			Cadastrado em
-			<span data-ng-bind="photo.created | date:'mediumDate'"></span>
-			por
-			<span data-ng-bind="photo.user.displayName"></span>
-		</em>
-	</small>
+	<small class="list-group-item-text">
+        Cadastrado em
+        <span>{{ photo.created | date:"dd/MM/yyyy 'às' hh:mm:ss" }}</span>
+        <p>
+            Criado por: 
+            <span data-ng-bind="photo._creator.name"></span>
+        </p>
+    </small>
 </section>

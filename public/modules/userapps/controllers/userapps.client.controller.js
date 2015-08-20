@@ -9,7 +9,10 @@ angular.module('userapps').controller('UserappsController', ['$scope', '$statePa
 		$scope.create = function() {
 			// Create new Userapp object
 			var userapp = new Userapps ({
-				name: this.name
+				name: this.name,
+				email: this.email,
+				cellphone: this.cellphone,
+				telephone: this.telephone
 			});
 
 			// Redirect after save

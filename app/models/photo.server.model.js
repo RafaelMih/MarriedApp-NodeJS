@@ -40,17 +40,17 @@ var PhotoSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	project: {
+	_project: {
 		type: Schema.ObjectId,
 		ref: 'Project'
 	},
-	gallery: {
+	_gallery: {
 		type: Schema.ObjectId,
 		ref: 'Gallery'
 	},
-	user: {
+	_creator: {
 		type: Schema.ObjectId,
-		ref: 'User'
+		ref: 'Admin'
 	}
 });
 

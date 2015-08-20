@@ -1,14 +1,32 @@
 <section data-ng-controller="UserappsController">
     <div class="page-header">
-        <h1>New Userapp</h1>
+        <h1>Novo usuário</h1>
     </div>
     <div class="col-md-12">
         <form class="form-horizontal" data-ng-submit="create()" novalidate>
             <fieldset>
                 <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
+                    <label class="control-label" for="name">Nome</label>
                     <div class="controls">
-                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
+                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Nome" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="email">Email</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="email" id="email" class="form-control" placeholder="Email" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="telephone">Telefone</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="telephone" id="telephone" class="form-control" placeholder="Telefone" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="cellphone">Celular</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="cellphone" id="cellphone" class="form-control" placeholder="Celular" required>
                     </div>
                 </div>
                 <div class="form-group">

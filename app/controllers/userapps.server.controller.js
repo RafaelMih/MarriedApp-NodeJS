@@ -13,7 +13,7 @@ var mongoose = require('mongoose'),
  */
 exports.create = function(req, res) {
 	var userapp = new Userapp(req.body);
-	userapp.user = req.user;
+	userapp._creator = req.user;	
 
 	userapp.save(function(err) {
 		if (err) {
@@ -73,7 +73,9 @@ exports.delete = function(req, res) {
  * List of Userapps
  */
 exports.list = function(req, res) { 
-	Userapp.find().sort('-created').populate('user', 'displayName').exec(function(err, userapps) {
+	Userapp.find().sort('-created')
+	.populate('_creator', 'name')
+	.exec(function(err, userapps) {
 		if (err) {
 			return res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -88,7 +90,9 @@ exports.list = function(req, res) {
  * Userapp middleware
  */
 exports.userappByID = function(req, res, next, id) { 
-	Userapp.findById(id).populate('user', 'displayName').exec(function(err, userapp) {
+	Userapp.findById(id)
+	.populate('_creator', 'name')
+	.exec(function(err, userapp) {
 		if (err) return next(err);
 		if (! userapp) return next(new Error('Failed to load Userapp ' + id));
 		req.userapp = userapp ;
@@ -100,8 +104,5 @@ exports.userappByID = function(req, res, next, id) {
  * Userapp authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-	if (req.userapp.user.id !== req.user.id) {
-		return res.status(403).send('User is not authorized');
-	}
 	next();
 };
