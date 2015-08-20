@@ -42,8 +42,6 @@ exports.update = function(req, res) {
 
 	photo = _.extend(photo , req.body);
 
-	console.log(photo);
-
 	photo.save(function(err) {
 		if (err) {
 			errorHandler.getError(res, err);

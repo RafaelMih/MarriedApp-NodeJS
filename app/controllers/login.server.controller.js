@@ -4,31 +4,61 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+	url = require('url'),
 	errorHandler = require('./errors.server.controller'),
 	coreHandler = require('./core.server.controller'),
-	UserProfile = require('./users/users.profile.server.controller'),
+	UserApp = mongoose.model('Userapp'),
+	Project = mongoose.model('Project'),
+	Token = mongoose.model('Token'),
 	Login = mongoose.model('Login');
+
+
 
 /**
  * Login
  */
 exports.login = function(req, res, next) {
-	console.log(req.params);
 	
-	var login = new Login(req.body);
+	var login = new Login(url.parse(req.url,true).query);	
 
-	/*var login = new Login({
-	phone : req.params.phone,
-	projectId : req.params.projectId,
-	hash : req.params.hash,
-	ip : coreHandler.getIP(req)
-	});*/
+	login.ip = coreHandler.getIP(req);
 
 	login.save(function(err) {
 		if (err) {
 			errorHandler.getError(res, err);
-		} else {			
-			return UserProfile.getUserByLogin(res, login, next);
+		} else {
+
+			//Hash validate
+			var isValidHash = Login.validateHash(login.phone, login.hash);		
+			
+			if (isValidHash){
+
+				//Project validate
+				Project.exists(login.projectId, function(err, exists){					
+					if (exists){
+						
+						//User validate
+						UserApp.exists(login.phone, login.projectId, function(err, exists){
+							if (exists){
+								
+								//Get user id for register token
+								UserApp.getByCellphone(login.phone, function(err, userAppId){
+									
+									Token.create()
+
+								});
+							}else{
+								errorHandler.setError(res,'Usuário inválido');
+							}
+						});
+					}
+					else{
+						errorHandler.setError(res,'Projeto inválido');
+					}
+				});
+			}else{
+				errorHandler.setError(res,'Hash inválido');
+			}
 		}
 	});
 };
@@ -48,3 +78,4 @@ exports.list = function(req, res) {
 		}
 	});
 };
+

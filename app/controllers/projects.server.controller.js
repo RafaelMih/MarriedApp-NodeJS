@@ -5,7 +5,7 @@
  */
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
-	Project = mongoose.model('Project'),
+	Project = mongoose.model('Project'),	
 	_ = require('lodash');
 
 /**
@@ -55,9 +55,7 @@ exports.delete = function(req, res) {
 
 	project.remove(function(err) {
 		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
+			errorHandler.getError(res, err);
 		} else {
 			res.jsonp(project);
 		}
@@ -94,9 +92,6 @@ exports.projectByID = function(req, res, next, id) {
 /**
  * Project authorization middleware
  */
-exports.hasAuthorization = function(req, res, next) {
-	if (req.project.user.id !== req.user.id) {
-		return res.status(403).send('Usuário não autorizado');
-	}
+exports.hasAuthorization = function(req, res, next) {	
 	next();
 };

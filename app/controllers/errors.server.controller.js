@@ -55,3 +55,12 @@ exports.getError = function(res, err) {
 		});
 };
 
+/**
+ * 
+ */
+exports.setError = function(res, err) {
+	return res.status(400).send({
+		message: err
+	});
+};
+

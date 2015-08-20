@@ -62,10 +62,31 @@ var UserappSchema = new Schema({
 		type : Schema.ObjectId, 
 		ref : 'Admin'
 	},
-	_projects : [{
-		type : Schema.ObjectId, 
-		ref : 'Project'
-	}]
+	_projects : [String]
 });
+
+/**
+ * Verify if exists
+ */
+UserappSchema.statics.exists = function(cellphone, projectId, callback) {
+  this.model('Userapp')
+  	.find({ cellphone: cellphone, _projects: { $in: [projectId] }}).count()
+  	.exec(function(err, count) {	
+		callback(err, count > 0);
+	});
+};
+
+/**
+ * Get UserApp by cellphone
+ */
+UserappSchema.statics.getByCellphone = function(cellphone, callback) {
+  this.model('Userapp')
+  	.findOne({ cellphone: cellphone}, { '_id': 1 })
+  	.exec(function(err, userApp) {
+  		if (userApp){
+			callback(err, userApp._id);
+		}
+	});
+};
 
 mongoose.model('Userapp', UserappSchema);

@@ -5,7 +5,8 @@
  */
 var mongoose = require('mongoose'),
 	validator = require('validator'),
-	crypto = require('crypto'),
+	sha256 = require('sha256'),
+	config = require('../../config/env/all'),
 	Schema = mongoose.Schema;
 
 /*var validateLength = {
@@ -75,22 +76,10 @@ var LoginSchema = new Schema({
 
 
 /**
- * Hook a pre save method to hash the password
+ * Hash validate
  */
-LoginSchema.pre('save', function(next) {
-	this.password = this.hashPassword(this.password);
-	next();
-});
-
-/**
- * Create instance method for hashing a password
- */
-LoginSchema.methods.hashPassword = function(password) {
-	if (this.salt && password) {
-		return crypto.pbkdf2Sync(password, this.salt, 4096, 32).toString('hex');
-	} else {
-		return password;
-	}
+LoginSchema.statics.validateHash = function(cellphone, hash){
+	return hash === (sha256(cellphone + config.salt));
 };
 
 mongoose.model('Login', LoginSchema);

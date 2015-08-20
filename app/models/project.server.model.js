@@ -27,4 +27,15 @@ var ProjectSchema = new Schema({
 	testimonies : [ {type : mongoose.Schema.ObjectId, ref : 'Testimony'} ],
 });
 
-mongoose.model('Project', ProjectSchema);
+/**
+ * Verify if exists
+ */
+ProjectSchema.statics.exists = function(projectId, callback) {
+  this.model('Project')
+  	.findOne({ _id: projectId }).count()
+  	.exec(function(err, count) {		
+		callback(err, count > 0);
+	});
+};
+
+var ProjectModel = mongoose.model('Project', ProjectSchema);
