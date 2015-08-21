@@ -44,8 +44,18 @@ exports.login = function(req, res, next) {
 								//Get user id for register token
 								UserApp.getByCellphone(login.phone, function(err, userAppId){
 									
-									Token.create()
+									var token = new Token();
 
+									token.userId = userAppId;
+									token.projectId = login.projectId;									
+
+									token.save(function(err, token){
+										if (err) errorHandler.getError(res, err);
+
+										return res.status(200).send({
+											token: token._id
+										});
+									});
 								});
 							}else{
 								errorHandler.setError(res,'Usuário inválido');
@@ -62,6 +72,14 @@ exports.login = function(req, res, next) {
 		}
 	});
 };
+
+/**
+ * Signup
+ */
+exports.login = function(req, res, next) {
+
+};
+
 
 
 /**

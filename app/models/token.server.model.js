@@ -27,20 +27,27 @@ var TokenSchema = new Schema({
 	},
 	expires: {
 		type: Date,
+		default: Date.now,
 		required: 'Data de expiração não informada'
 	}
 });
 
 /**
- * Save the token
+ * Hook a pre save method to hash the password
  */
-TokenSchema.method.create = function(token, callback) {
-	
-	token.expires = token.created.add('h', 2);
-	
-	this.model('Token').insert(token, function(err, tokenId){
-  		console.log(tokenId);
-    	callback(err, tokenId);
+TokenSchema.pre('save', function(next) {
+	if (this.created) {
+		this.expires = moment(this.created).add(2, 'h');
+	}
+
+	next();
+});
+
+
+TokenSchema.statics.create = function(token, next, callback) {
+	token.save(function(err, tokenId) {
+		callback(err, tokenId);
+		next();
 	});
 };
 
