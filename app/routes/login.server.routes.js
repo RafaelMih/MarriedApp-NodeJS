@@ -1,13 +1,16 @@
 'use strict';
 
 module.exports = function(app) {
-	var users = require('../../app/controllers/users.server.controller');
+	var admins = require('../../app/controllers/admins.server.controller');
 	var login = require('../../app/controllers/login.server.controller');
 
 	// Login Routes
 	app.route('/login')
 		.get(login.login);
 
-	//app.route('/signup')
-		//.get(login.signup);
+	app.route(admins.hasAuthorization(['admin']), '/logins')
+		.get(login.list);
+
+	app.route('/signup')
+		.get(login.signup);
 };

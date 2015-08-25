@@ -19,67 +19,70 @@ var mongoose = require('mongoose'),
  */
 exports.login = function(req, res, next) {
 	
-	var login = new Login(url.parse(req.url,true).query);	
-
+	var login = new Login(url.parse(req.url,true).query);
 	login.ip = coreHandler.getIP(req);
 
 	login.save(function(err) {
-		if (err) {
-			errorHandler.getError(res, err);
-		} else {
+		
+		//error verify
+		errorHandler.getError(res, err);
+		
+		//Hash validate
+		var isValidHash = Login.validateHash(login.phone, login.hash);		
+		
+		if (isValidHash){
 
-			//Hash validate
-			var isValidHash = Login.validateHash(login.phone, login.hash);		
-			
-			if (isValidHash){
+			//Project validate
+			Project.exists(login.projectId, function(err, exists){
 
-				//Project validate
-				Project.exists(login.projectId, function(err, exists){					
-					if (exists){
-						
-						//User validate
-						UserApp.exists(login.phone, login.projectId, function(err, exists){
-							if (exists){
+				//error verify
+				errorHandler.getError(res, err);
+
+				if (exists){
+					
+					//User validate
+					UserApp.exists(login.phone, login.projectId, function(err, exists){
+
+						//error verify
+						errorHandler.getError(res, err);
+
+						if (exists){
+							
+							//Get user id for register token
+							UserApp.getByCellphone(login.phone, function(err, userAppId){
+
+								//error verify
+								errorHandler.getError(res, err);
 								
-								//Get user id for register token
-								UserApp.getByCellphone(login.phone, function(err, userAppId){
+								var token = new Token();
+
+								token.userId = userAppId;
+								token.projectId = login.projectId;									
+
+								token.save(function(err, token){
 									
-									var token = new Token();
+									//error verify
+									errorHandler.getError(res, err);
 
-									token.userId = userAppId;
-									token.projectId = login.projectId;									
-
-									token.save(function(err, token){
-										if (err) errorHandler.getError(res, err);
-
-										return res.status(200).send({
-											token: token._id
-										});
+									return res.status(200).send({
+										token: token._id
 									});
 								});
-							}else{
-								errorHandler.setError(res,'Usuário inválido');
-							}
-						});
-					}
-					else{
-						errorHandler.setError(res,'Projeto inválido');
-					}
-				});
-			}else{
-				errorHandler.setError(res,'Hash inválido');
-			}
-		}
+							});
+						}else{
+							errorHandler.setError(res,'Usuário inválido');
+						}
+					});
+				}
+				else{
+					errorHandler.setError(res,'Projeto inválido');
+				}
+			});
+		}else{
+			errorHandler.setError(res,'Autenticação inválida');
+		}		
 	});
 };
-
-/**
- * Signup
- */
-exports.login = function(req, res, next) {
-
-};
-
 
 
 /**
@@ -88,12 +91,20 @@ exports.login = function(req, res, next) {
 exports.list = function(req, res) { 
 	Login.find().sort('-created').exec(function(err, logins) {
 		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
+			errorHandler.getError(err);
 		} else {
 			res.jsonp(logins);
 		}
 	});
 };
 
+exports.signup = function(req, res){
+	var token = Token.getValidToken(req, res, function(err, user){
+		
+		if (!user){
+			errorHandler.getError(res, err);
+		}else{
+			res.jsonp(user);
+		}
+	});
+};

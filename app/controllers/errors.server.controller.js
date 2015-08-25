@@ -17,9 +17,12 @@ var getUniqueErrorMessage = function(err) {
 	return output;
 };
 
-var getErrorMessages = function(err) {
+var getErrorMessages = function(err) {	
 	
 	var messages = [];
+
+	if (err.stack)
+		messages.push(err.stack);
 
 	if (err.code) {
 		switch (err.code) {
@@ -50,9 +53,11 @@ exports.getErrorMessage = function(err) {
  * Get the error message from error object
  */
 exports.getError = function(res, err) {
-	return res.status(400).send({
+	if (err){
+		return res.status(400).send({
 			message: getErrorMessages(err)
 		});
+	}
 };
 
 /**

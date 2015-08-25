@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
     moment = require('moment'),
+    errorHandler = require('../controllers/errors.server.controller'),
 	Schema = mongoose.Schema;
 
 /**
@@ -44,10 +45,50 @@ TokenSchema.pre('save', function(next) {
 });
 
 
-TokenSchema.statics.create = function(token, next, callback) {
-	token.save(function(err, tokenId) {
+TokenSchema.statics.create = function(userAppId, projectId, callback) {
+	var _this = this;
+
+	var token = new this();
+	_this.userAppId = userAppId;
+	_this.projectId = projectId;
+
+	_this.model('Token').save(function(err, tokenId) {
 		callback(err, tokenId);
-		next();
+	});
+};
+
+TokenSchema.statics.getValidToken = function(req, res, callback) {
+	var _this = this;
+	var _authorization = req.headers.authorization;
+	var _error = new Error();
+	_error.stack = '';
+
+	if (!_authorization){
+		_error.stack = 'Autorização não informada';
+	}
+
+	console.log(new Date(Date.now()));
+
+	_this.model('Token')
+  	.findOne({_id: _authorization, expires : { $gt: new Date() }}, {userId : 1})
+  	.exec(function(err, token) {
+
+  		if (_authorization && !token){
+  			_error.stack = 'Autorização inválida ou expirada';
+		}
+
+		if (!_error.stack && !err){
+			
+	  		_this.model('Userapp')
+	  			.findById(token.userId, { _creator: 0, __v: 0})
+	  			.exec(function(err, user){
+	  				console.log(user);
+	  				callback(err, user);
+			});
+  		}
+  		else{
+			callback(_error || err, null);
+		}
 	});
 };
 
