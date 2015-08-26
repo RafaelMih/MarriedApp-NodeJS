@@ -27,10 +27,15 @@ exports.login = function(req, res, next) {
 		//error verify
 		errorHandler.getError(res, err);
 		
+		console.log('Validando hash...');
+
 		//Hash validate
 		var isValidHash = Login.validateHash(login.phone, login.hash);		
 		
 		if (isValidHash){
+
+			console.log('Hash ok');
+			console.log('Validando projeto...');
 
 			//Project validate
 			Project.exists(login.projectId, function(err, exists){
@@ -39,35 +44,49 @@ exports.login = function(req, res, next) {
 				errorHandler.getError(res, err);
 
 				if (exists){
+
+					console.log('Projeto ok');
+					console.log('Validando usuário...');
 					
-					//User validate
-					UserApp.exists(login.phone, login.projectId, function(err, exists){
+					//Get user id for register token
+					UserApp.getByCellphone(login.phone, function(err, userId){
+
+						console.log('Verificando usuário...111111111111');
 
 						//error verify
 						errorHandler.getError(res, err);
 
-						if (exists){
-							
-							//Get user id for register token
-							UserApp.getByCellphone(login.phone, function(err, userAppId){
+						console.log('Verificando usuário...');
 
-								//error verify
-								errorHandler.getError(res, err);
-								
-								var token = new Token();
+						if (userId){
 
-								token.userId = userAppId;
-								token.projectId = login.projectId;									
+							//User validate
+							UserApp.existsInProject(userId, login.projectId, function(err, exists){
 
-								token.save(function(err, token){
-									
+								if (exists){
+
 									//error verify
 									errorHandler.getError(res, err);
 
-									return res.status(200).send({
-										token: token._id
+									console.log('Usuário OK');
+									
+									var token = new Token();
+
+									token.userId = userId;
+									token.projectId = login.projectId;									
+
+									token.save(function(err, token){
+										
+										//error verify
+										errorHandler.getError(res, err);
+
+										return res.status(200).send({
+											token: token._id
+										});
 									});
-								});
+								}else{
+									errorHandler.setError(res,'Usuário não pertence ao projeto');
+								}
 							});
 						}else{
 							errorHandler.setError(res,'Usuário inválido');
@@ -100,9 +119,10 @@ exports.list = function(req, res) {
 
 exports.signup = function(req, res){
 	var token = Token.getValidToken(req, res, function(err, user){
-		
-		errorHandler.getError(res, err);
-	
-		res.jsonp(user);
+		if (err){
+			errorHandler.getError(res, err);
+		}else{
+			res.jsonp(user);
+		}
 	});
 };

@@ -73,17 +73,24 @@ TokenSchema.statics.getValidToken = function(req, res, callback) {
 
   		if (_authorization && !token){
   			_error.stack = 'Autorização inválida ou expirada';
+  			console.log('11111111111');
 		}
 
+		console.log('eeeeeeee');
+
 		if (!_error.stack && !err){
+
+			console.log('222222');
 			
 	  		_this.model('Userapp')
 	  			.findById(token.userId, { _creator: 0, __v: 0})
 	  			.exec(function(err, user){
+	  				console.log('eeeeeeee');
 	  				callback(err, user);
 			});
   		}
   		else{
+  			console.log('3333333');
 			callback(_error || err, null);
 		}
 	});

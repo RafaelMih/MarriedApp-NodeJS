@@ -81,6 +81,17 @@ UserappSchema.statics.exists = function(cellphone, projectId, callback) {
 };
 
 /**
+ * Verify if exists
+ */
+UserappSchema.statics.existsInProject = function(userId, projectId, callback) {
+  this.model('Project')
+  	.find({ _id: projectId, users: { $in: [userId] }}).count()
+  	.exec(function(err, count) {	
+		callback(err, count > 0);
+	});
+};
+
+/**
  * Get UserApp by cellphone
  */
 UserappSchema.statics.getByCellphone = function(cellphone, callback) {
@@ -88,7 +99,9 @@ UserappSchema.statics.getByCellphone = function(cellphone, callback) {
   	.findOne({ cellphone: cellphone}, { '_id': 1 })
   	.exec(function(err, userApp) {
   		if (userApp){
-			callback(err, userApp._id);
+			callback(null, userApp._id);
+		}else{
+			callback(err, null);
 		}
 	});
 };
