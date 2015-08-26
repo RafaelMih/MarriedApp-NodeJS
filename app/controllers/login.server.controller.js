@@ -101,10 +101,8 @@ exports.list = function(req, res) {
 exports.signup = function(req, res){
 	var token = Token.getValidToken(req, res, function(err, user){
 		
-		if (!user){
-			errorHandler.getError(res, err);
-		}else{
-			res.jsonp(user);
-		}
+		errorHandler.getError(res, err);
+	
+		res.jsonp(user);
 	});
 };

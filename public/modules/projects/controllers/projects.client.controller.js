@@ -44,6 +44,16 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
 		$scope.update = function() {
 			var project = $scope.project;
 
+			for(var key in project.usersAdm) {
+    			var value = project.usersAdm[key];
+
+    			if (value && project.users.indexOf(key) === -1){
+    				project.users.push(key);
+    			}else{
+    				project.users.splice(project.users.indexOf(key), 1);
+    			}
+			}
+
 			project.$update(function() {
 				$location.path('projects/' + project._id);
 			}, function(errorResponse) {
@@ -60,6 +70,19 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
 		$scope.findOne = function() {
 			$scope.project = Projects.get({ 
 				projectId: $stateParams.projectId
+			});
+		};
+
+		// Find existing Photo
+		$scope.initCreate = function() {
+   			$scope.users = Projects.getUsers().query();
+		};
+
+		$scope.initEdit = function(){
+			$scope.initCreate();
+			$scope.findOne();
+			$scope.projectUsers = Projects.getProjectUsers().get({ 
+				projectUserId: $stateParams.projectId
 			});
 		};
 	}

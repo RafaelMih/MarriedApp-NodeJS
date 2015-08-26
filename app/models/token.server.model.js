@@ -67,8 +67,6 @@ TokenSchema.statics.getValidToken = function(req, res, callback) {
 		_error.stack = 'Autorização não informada';
 	}
 
-	console.log(new Date(Date.now()));
-
 	_this.model('Token')
   	.findOne({_id: _authorization, expires : { $gt: new Date() }}, {userId : 1})
   	.exec(function(err, token) {
@@ -82,7 +80,6 @@ TokenSchema.statics.getValidToken = function(req, res, callback) {
 	  		_this.model('Userapp')
 	  			.findById(token.userId, { _creator: 0, __v: 0})
 	  			.exec(function(err, user){
-	  				console.log(user);
 	  				callback(err, user);
 			});
   		}

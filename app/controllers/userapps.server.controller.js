@@ -73,7 +73,7 @@ exports.delete = function(req, res) {
  * List of Userapps
  */
 exports.list = function(req, res) { 
-	Userapp.find().sort('-created')
+	Userapp.find({ active: true }, {_id: 1, name: 1, urlPhoto : 1, _creator: 1, created: 1}).sort('name')
 	.populate('_creator', 'name')
 	.exec(function(err, userapps) {
 		if (err) {
@@ -92,6 +92,7 @@ exports.list = function(req, res) {
 exports.userappByID = function(req, res, next, id) { 
 	Userapp.findById(id)
 	.populate('_creator', 'name')
+	.populate('users', 'name')
 	.exec(function(err, userapp) {
 		if (err) return next(err);
 		if (! userapp) return next(new Error('Failed to load Userapp ' + id));

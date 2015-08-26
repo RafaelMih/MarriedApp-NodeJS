@@ -47,6 +47,10 @@ var UserappSchema = new Schema({
 		trim: true,
 		default: ''
 	},
+	active: {
+		type: Boolean,
+		default: true
+	},
 	isAdmin: {
 		type: Boolean,
 		default: true
@@ -88,5 +92,6 @@ UserappSchema.statics.getByCellphone = function(cellphone, callback) {
 		}
 	});
 };
+
 
 mongoose.model('Userapp', UserappSchema);

@@ -33,6 +33,8 @@ exports.adminByID = function(req, res, next, id) {
  */
 exports.requiresLogin = function(req, res, next) {
 
+	console.log(req.user);
+
 	if (!req.isAuthenticated()) {
 		return res.status(401).send({
 			message: messages.AdminNotLogged

@@ -9,11 +9,20 @@ module.exports = function(app) {
 		.get(projects.list)
 		.post(users.requiresLogin, projects.create);
 
+	// Projects Routes
+	app.route('/projectUsers/:projectUserId')
+		.get(projects.users);
+
 	app.route('/projects/:projectId')
 		.get(projects.read)
 		.put(users.requiresLogin, projects.hasAuthorization, projects.update)
 		.delete(users.requiresLogin, projects.hasAuthorization, projects.delete);
 
+
+
+
 	// Finish by binding the Project middleware
 	app.param('projectId', projects.projectByID);
+
+	app.param('projectUserId', projects.users);
 };

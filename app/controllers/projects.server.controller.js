@@ -78,6 +78,20 @@ exports.list = function(req, res) {
 };
 
 /**
+ * List of Projects
+ */
+exports.users = function(req, res, next, id) { 
+	Project.findById(id, { users : true})
+	.exec(function(err, projects) {
+		if (err) {
+			errorHandler.getError(res, err);
+		} else {
+			res.jsonp(projects.users);
+		}
+	});
+};
+
+/**
  * Project middleware
  */
 exports.projectByID = function(req, res, next, id) { 

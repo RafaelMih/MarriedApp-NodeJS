@@ -20,7 +20,7 @@ var ProjectSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	users : [ {type : mongoose.Schema.ObjectId, ref : 'User'} ],
+	users : [ {type : mongoose.Schema.ObjectId, ref : 'Userapp'} ],
 	guests : [ {type : mongoose.Schema.ObjectId, ref : 'Guest'} ],
 	events : [ {type : mongoose.Schema.ObjectId, ref : 'Event'} ],
 	photos : [ {type : mongoose.Schema.ObjectId, ref : 'Photo'} ],
@@ -35,6 +35,21 @@ ProjectSchema.statics.exists = function(projectId, callback) {
   	.findOne({ _id: projectId }).count()
   	.exec(function(err, count) {		
 		callback(err, count > 0);
+	});
+};
+
+
+
+/**
+ * Get UserApp by project
+ */
+ProjectSchema.statics.getUsers = function(projectId, callback) {
+  this.model('Project')
+  	.findOne({ projectId: projectId}, { 'users': 1 })
+  	.exec(function(err, users) {
+  		if (users){
+			callback(err, users);
+		}
 	});
 };
 
