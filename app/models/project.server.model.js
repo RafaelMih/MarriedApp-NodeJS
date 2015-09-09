@@ -13,7 +13,17 @@ var ProjectSchema = new Schema({
 	name: {
 		type: String,
 		default: '',
-		required: 'Please fill Project name',
+		required: 'Informe o nome do projeto',
+		trim: true
+	},
+	urlVideo: {
+		type: String,
+		default: '',
+		trim: true
+	},
+	story: {
+		type: String,
+		default: '',
 		trim: true
 	},
 	created: {

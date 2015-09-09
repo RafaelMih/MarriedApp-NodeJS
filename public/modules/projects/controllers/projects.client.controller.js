@@ -9,8 +9,18 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$statePa
 		$scope.create = function() {
 			// Create new Project object
 			var project = new Projects ({
-				name: this.name
+				name: this.name,
+				story: this.story,
+				urlVideo: this.urlVideo
 			});
+
+			for(var key in this.usersAdm) {
+    			var value = this.usersAdm[key];
+
+    			if (value){
+    				project.users.push(key);
+    			}
+			}
 
 			// Redirect after save
 			project.$save(function(response) {

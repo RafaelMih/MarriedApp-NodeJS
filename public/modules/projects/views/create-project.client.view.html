@@ -6,9 +6,30 @@
         <form class="form-horizontal" data-ng-submit="create()" novalidate>
             <fieldset>
                 <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
+                    <label class="control-label" for="name">Nome</label>
                     <div class="controls">
-                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
+                        <input type="text" data-ng-model="name" id="name" class="form-control" placeholder="Nome" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="urlVideo">Url do vídeo</label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="urlVideo" id="urlVideo" class="form-control" placeholder="Url do vídeo" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="story">História</label>
+                    <div class="controls">
+                        <textarea rows="5" data-ng-model="story" id="story" class="form-control" placeholder="História"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <p><label class="control-label" for="name">Usuários</label></p>
+                    <div ng-repeat="user in users">
+                        <p>
+                            <input ng-model="usersAdm[user._id]" type="checkbox" id="usersAdm"> 
+                            <label>{{ user.name }}</label>
+                        </p>
                     </div>
                 </div>
                 <div class="form-group">

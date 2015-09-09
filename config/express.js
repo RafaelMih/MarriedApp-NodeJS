@@ -75,12 +75,22 @@ module.exports = function(db) {
 		app.locals.cache = 'memory';
 	}
 
+	
+	app.use(bodyParser.json());
+	app.use(methodOverride());
+
 	// Request body parsing middleware should be above methodOverride
 	app.use(bodyParser.urlencoded({
 		extended: true
 	}));
-	app.use(bodyParser.json());
-	app.use(methodOverride());
+
+	
+ 
+	// parse some custom thing into a Buffer 
+	app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }));
+
+	// parse an HTML body into a string 
+	app.use(bodyParser.text({ type: 'text/html' }));
 
 	// CookieParser should be above session
 	app.use(cookieParser());
@@ -136,7 +146,7 @@ module.exports = function(db) {
 	app.use(function(req, res) {
 		res.status(404).render('404', {
 			url: req.originalUrl,
-			error: 'Not Found'
+			error: 'Página não encontrada'
 		});
 	});
 

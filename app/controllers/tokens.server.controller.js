@@ -17,9 +17,7 @@ exports.create = function(req, res) {
 
 	token.save(function(err) {
 		if (err) {
-			return res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
+			errorHandler.getError(res, err);
 		} else {
 			res.jsonp(token);
 		}
@@ -90,7 +88,7 @@ exports.list = function(req, res) {
 exports.tokenByID = function(req, res, next, id) { 
 	Token.findById(id).populate('user', 'displayName').exec(function(err, token) {
 		if (err) return next(err);
-		if (! token) return next(new Error('Failed to load Token ' + id));
+		if (! token) errorHandler.setError('Token não encontrado');
 		req.token = token ;
 		next();
 	});

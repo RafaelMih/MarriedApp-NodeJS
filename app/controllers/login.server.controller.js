@@ -25,38 +25,32 @@ exports.login = function(req, res, next) {
 	login.save(function(err) {
 		
 		//error verify
-		errorHandler.getError(res, err);
+		if (err){
+			errorHandler.getError(res, err);
+		}
 		
-		console.log('Validando hash...');
-
 		//Hash validate
 		var isValidHash = Login.validateHash(login.phone, login.hash);		
 		
 		if (isValidHash){
 
-			console.log('Hash ok');
-			console.log('Validando projeto...');
-
 			//Project validate
 			Project.exists(login.projectId, function(err, exists){
 
 				//error verify
-				errorHandler.getError(res, err);
+				if (err){
+					errorHandler.getError(res, err);
+				}
 
 				if (exists){
 
-					console.log('Projeto ok');
-					console.log('Validando usuário...');
-					
 					//Get user id for register token
 					UserApp.getByCellphone(login.phone, function(err, userId){
 
-						console.log('Verificando usuário...111111111111');
-
 						//error verify
-						errorHandler.getError(res, err);
-
-						console.log('Verificando usuário...');
+						if (err){
+							errorHandler.getError(res, err);
+						}
 
 						if (userId){
 
@@ -66,10 +60,10 @@ exports.login = function(req, res, next) {
 								if (exists){
 
 									//error verify
-									errorHandler.getError(res, err);
+									if (err){
+										errorHandler.getError(res, err);
+									}
 
-									console.log('Usuário OK');
-									
 									var token = new Token();
 
 									token.userId = userId;
@@ -118,11 +112,22 @@ exports.list = function(req, res) {
 };
 
 exports.signup = function(req, res){
-	var token = Token.getValidToken(req, res, function(err, user){
+	var token = Token.getValidToken(req, res, function(err, token){
 		if (err){
 			errorHandler.getError(res, err);
 		}else{
-			res.jsonp(user);
+			console.log(token);
+			UserApp.getByToken(token, function(err, user){
+				if (err){
+					errorHandler.getError(res, err);		
+				}else{
+					if(user){
+						res.jsonp(user);
+					}else{
+						errorHandler.setError('Usuário não encontrado');
+					}
+				}
+			});
 		}
 	});
 };

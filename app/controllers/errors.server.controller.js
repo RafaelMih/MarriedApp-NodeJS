@@ -21,9 +21,12 @@ var getErrorMessages = function(err) {
 	
 	var messages = [];
 
-	if (err.stack)
-		messages.push(err.stack);
+	console.log(err);
 
+	if (err.message){
+		messages.push(err.message);
+	}
+	
 	if (err.code) {
 		switch (err.code) {
 			case 11000:

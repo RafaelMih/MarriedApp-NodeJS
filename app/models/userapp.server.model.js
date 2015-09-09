@@ -106,5 +106,16 @@ UserappSchema.statics.getByCellphone = function(cellphone, callback) {
 	});
 };
 
+/**
+ * Get UserApp by token
+ */
+UserappSchema.statics.getByToken = function(token, callback){
+	this.model('Userapp')
+		.findById(token.userId, { _creator: 0, __v: 0})
+		.exec(function(err, user){
+			callback(err, user);
+	});
+};
+
 
 mongoose.model('Userapp', UserappSchema);

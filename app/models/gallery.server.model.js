@@ -16,9 +16,12 @@ var GallerySchema = new Schema({
 		required: 'Informe o nome da galeria',
 		trim: true
 	},
-	_creator: {
-		type: Schema.ObjectId,
-		ref: 'Admin'
+	order: {
+		type: Number,
+	},
+	photosEnable: {
+		type: Boolean,
+		default: true
 	},
 	active: {
 		type: Boolean,
@@ -27,7 +30,11 @@ var GallerySchema = new Schema({
 	created: {
 		type: Date,
 		default: Date.now
-	}
+	},
+	_creator: {
+		type: Schema.ObjectId,
+		ref: 'Admin'
+	},
 });
 
 mongoose.model('Gallery', GallerySchema);
